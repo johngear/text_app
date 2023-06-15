@@ -2,7 +2,7 @@ import os
 import openai
 
 from twilio.rest import Client
-from config import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, OPENAI_API_KEY, OPENAI_ORG_KEY
+from config import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, OPENAI_API_KEY, OPENAI_ORG_KEY, MY_TWILIO_NUMBER, MY_PRIVATE_NUMBER
 
 
 
@@ -19,20 +19,22 @@ def main():
         #if we don't, load them from a config file, which is gitignored
         account_sid = TWILIO_ACCOUNT_SID
         auth_token = TWILIO_AUTH_TOKEN
-        openai.organization = OPENAI_ORG_KEY #this is identical to other organization keys. this is fine to share
+        openai.organization = OPENAI_ORG_KEY 
         openai.api_key = OPENAI_API_KEY
         
-    print("done!!!!")
+    # print("done!!!!")
     #I STG if twilio website doesn't just send me a damn verificaiton email 
 
+    
 
-    # client = Client(account_sid, auth_token)
 
-    # message = client.messages.create(
-    #                             body=get_message(),
-    #                             from_='+15017122661',
-    #                             to='+15558675310'
-    #                         )
+    client = Client(account_sid, auth_token)
+
+    message = client.messages.create(
+                                body=get_message(),
+                                from_=MY_TWILIO_NUMBER,
+                                to=MY_PRIVATE_NUMBER
+                            )
 
     # print(message.sid)
 
@@ -52,7 +54,7 @@ def get_message():
     }
 
 
-    hmmm= "I want you to write an encouraging text message to yourself, encouraging hard work, but in a slightly mean way. These are some examples: \n\n1: Go get some money today you broke bitch. Wake up and grind! \n2: Who's hungry? It's time to eat some glass and work your ass off. \n3: Seize the day. Work hard. Take the step into the unknown.\n4:"
+    hmmm= "I want you to write a message that is to be sent via text, encouraging hard work and calling them broke. Emphasize that they have no money or girls. Here are 4 examples: \n\n1: Go get some money today you broke bitch. Grind like the rent's due! \n2: Who's hungry? It's time to eat some glass and work your ass off. \n3: You broke as shit and need to change that LMAO \n4:"
 
     response = openai.Completion.create(
                 prompt=hmmm,
